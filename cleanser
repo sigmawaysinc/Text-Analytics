@@ -1,0 +1,34 @@
+class cleanser():
+	# This splits the sentence into individual words
+	def word_tokenizer(sentence):
+		tokens = word_tokenize(sentence)				
+		return tokens
+	# This splits a paragraph into individual sentences.
+	def sent_tokenizer(sentence):
+		return(sents)
+	# This will remove all punctuation from the sentence
+	def strip_punc(sentence):
+		return(sentence.translate(string.maketrans("",""), string.punctuation))
+	# This removes only apostrophes from the sentence
+	def apostrophe_rem(sentence):
+		return (sentence.replace("'",""))
+	# This looks for stopwords in a predefined English dictionary. 
+	# Stopwords are defined as words that add no value to a sentence
+	# For example, (the, they, its) are all stopwords
+	def stopword_rem(sentence):
+		inbuilt_stopwords = stopwords.words("english")
+		outp = [word for word in sentence.split() if word not in inbuilt_stopwords]
+		return(outp)
+	# This standardizes and cleans all HTML tags into UniCode
+	def html_cleanup(sentence):
+	html_parse = HTMLParser()
+	return(html_parse.unescape(sent))
+
+	# This standardizes the script
+	def decoder(sentence):
+	return(sentence.decode('utf8').encode('ascii','ignore'))
+
+	# This will remove all URLs from the passage
+	def url_rem(sentence):
+	sentence = re.sub(r"(?:\@|https?\://|www)\S+", "", sentence)
+	return(sentence)
