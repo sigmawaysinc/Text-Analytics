@@ -64,7 +64,7 @@ def train(features):
         model[f] += 1
     return model
 
-NWORDS = train(words(file('/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/enchant/share/enchant/myspell/en_US.dic').read()))
+NWORDS = train(words(file('en_US.dic').read()))
 
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -92,8 +92,6 @@ def hyphen_rem(sentence):
 	return(sentence.replace("-"," "))
 
 tokenized = read_file(filename)
-#tokenized = hyphen_rem(tokenized)
-#tokenized = strip_punc(tokenized)
 tokenized = tokenized.split()
 print len(tokenized)
 for x in xrange(0,len(tokenized)):
