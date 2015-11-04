@@ -49,7 +49,7 @@ def correction(file_name):
 			a = d.suggest(item)
 			if len(a) > 0:
 				output.append(a[0])
-				ctr += 1
+				ctr += 1  #Number of corrected words
 			else:
 				output.append(item)
 	return output
