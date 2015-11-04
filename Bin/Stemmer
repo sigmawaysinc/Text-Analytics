@@ -1,28 +1,39 @@
-class word_stemmer():
+import nltk
+import numpy as np
 
-	# This will look up treebank tags and convert them into
-	# tags that can be understood by the lemmatizer
-	def wordnet_pos(treebank_tag):
-		if treebank_tag.startswith('J'):
-			return wordnet.ADJ
-		elif treebank_tag.startswith('N'):
-			return wordnet.NOUN
-		elif treebank_tag.startswith('V'):
-			return wordnet.VERB
-		elif treebank_tag.startswith('R'):
-			return wordnet.ADV
-		else:
-			return ''
+sent = raw_input("Enter a sentence")
 
-	# This will read in a sentence, tokenize the words and stem them
-	# Stem_port is the Porter Stemmer and stem_wnl is the WordNet
-	# Lemmatizer
-	def stem_words(sentence):
-		stemmed_port = []
-		stemmed_wnl = []
-		port = PorterStemmer()
-		wnl = WordNetLemmatizer()
-		tokens = word_tokenizer(sentence)
-		for item in tokens:
-			stemmed_wnl.append(wnl.lemmatize(item))
-		return stemmed_wnl
+def word_tokenizer(sentence):
+	return word_tokenize(sentence)
+
+def pos_tag(sentence):
+	return nltk.pos_tag(word_tokenizer(sentence))
+
+def stem_words(sentence):
+	stemmed_port = []
+	stemmed_wnl = []
+	port = PorterStemmer()
+	wnl = WordNetLemmatizer()
+	tokens = word_tokenizer(sentence)
+	pos_list = np.array(pos_tag(sentence))
+	length = len(tokens)
+	pos_array = []
+	adj_array = ["JJ", "JJR", "JJS"]
+	noun_array = ["NN", "NNP", "NNS", "NNPS"]
+	verb_array = ["VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
+	adv_array = ["RB", "RBR", "RBS", "RP"]
+	for x in xrange(0,length):
+		pos_array.append(pos_list[x][1])
+	for x in xrange(0,length):
+		if pos_array[x] in adj_array:
+			stemmed_wnl.append(wnl.lemmatize(tokens[x], wn.ADJ))
+		elif pos_array[x] in noun_array:
+			stemmed_wnl.append(wnl.lemmatize(tokens[x], wn.NOUN))
+		elif pos_array[x] in verb_array:
+			stemmed_wnl.append(wnl.lemmatize(tokens[x], wn.VERB))
+		elif pos_array[x] in adv_array:
+			stemmed_wnl.append(wnl.lemmatize(tokens[x], wn.ADV))
+	print pos_tag(sentence)
+	print stemmed_wnl
+
+stem_words(sent)

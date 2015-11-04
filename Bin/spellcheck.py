@@ -32,6 +32,7 @@ def read_csv():
 		inp.append(x)
 	return inp
 
+ctr = 0
 def correction(file_name):
 	d = enchant.Dict("en_US.dic")
 	if filetype == 'txt':
@@ -48,6 +49,7 @@ def correction(file_name):
 			a = d.suggest(item)
 			if len(a) > 0:
 				output.append(a[0])
+				ctr += 1
 			else:
 				output.append(item)
 	return output
