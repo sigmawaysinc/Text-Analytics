@@ -17,28 +17,9 @@ filetype = config.get('File functions', 'Input File Format')
 output_file = config.get('File functions', 'Output File')
 task_type = config.get('File functions', 'Type of Task')
 if_cleanse = config.get('File functions', 'Cleanse')
-if_stem = config.get('File functions', 'Stem')
-if_spell = config.get('File functions', 'Check Spelling')
-if_grammar = config.get('File functions', 'Check Grammar')
-if_lang = config.get('File functions', 'Detect Language')
-if_ner = config.get('File functions', 'Detect Named Entities')
-if_summarize = config.get('File functions', 'Summarize File')
-decode = config.get('Cleanser', 'Decode Text')
-url_rem = config.get('Cleanser', 'Remove URL')
-stop_rem = config.get('Cleanser', 'Remove Stopwords')
-word_tok = config.get('Cleanser', 'Tokenize Words')
-sent_tok = config.get('Cleanser', 'Tokenize Sentences')
-apos_rem = config.get('Cleanser', 'Remove Apostrophes')
-strip_punc = config.get('Cleanser', 'Remove Punctuation')
-html_char = config.get('Cleanser', 'Convert Escape Characters')
-html_tag = config.get('Cleanser', 'Remove HTML Tags')
-word_count = config.get('Stemmer', 'Word Count')
-postag_show = config.get('Stemmer', 'Show POS Tags')
-spell_words = config.get('Spell Checker', 'Show Closest Word')
-sep_entities = config.get('Named Entity Recognizer', 'Separate Entities')
-entity_freq = config.get('Named Entity Recognizer', 'Entity Frequency')
 
-def read_txt():
+
+def read_txt_table():
 	inp = []
 	with open(file_name, 'rU') as g:
 		reader = csv.reader(g,delimiter = '\t')
@@ -71,6 +52,10 @@ def read_csv():
 	for x,y in sent:
 		inp.append(x)
 	return inp
+
+def read_txt_file(file_name):
+	read_filename = open(filename, 'r')
+	return read_filename.read()
 
 def sent_tokenizer(sentence):
 	tokens = sent_tokenize(sentence)
@@ -112,42 +97,40 @@ def pos_tag(sentence):				# Example:
 	yolo = word_tokenizer(sent)		# "I am walking the dog"
 	return nltk.pos_tag(yolo)		# [["I", NNP], ["am", NNP], ["walking", VBD]]
 
-# Example:
-# walking walks communities
-# walk walk community
-# run ran
-# run ran
-def stem_words(sentence):
-	stemmed_wnl = []
-	wnl = WordNetLemmatizer()
-	tokens = word_tokenizer(sentence)
-	pos_list = np.array(pos_tag(sentence))
-	length = len(tokens)
-	pos_array = []
-	adj_array = ["JJ", "JJR", "JJS"]
-	noun_array = ["NN", "NNP", "NNS", "NNPS"]
-	verb_array = ["VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
-	adv_array = ["RB", "RBR", "RBS", "RP"]
-	for x in xrange(0,length):
-		pos_array.append(pos_list[x][1])
-	for x in xrange(0,length):
-		if pos_array[x] in adj_array:
-			stemmed_wnl.append(wnl.lemmatize(tokens[x], wn.ADJ))
-		elif pos_array[x] in noun_array:
-			stemmed_wnl.append(wnl.lemmatize(tokens[x], wn.NOUN))
-		elif pos_array[x] in verb_array:
-			stemmed_wnl.append(wnl.lemmatize(tokens[x], wn.VERB))
-		elif pos_array[x] in adv_array:
-			stemmed_wnl.append(wnl.lemmatize(tokens[x], wn.ADV))
-	return stemmed_wnl
-
 if filetype == 'txt':
-	read_txt(filename)
+	file_name = read_txt(filename)
 elif filetype == 'json':
-	read_json(filename)
+	file_name = read_json(filename)
 elif filetype == 'xml':
-	read_xml(filename)
+	file_name = read_xml(filename)
 elif filetype == 'rss':
-	read_rss(filename)
+	file_name = read_rss(filename)
 elif filetype == 'csv':
-	read_csv(filename)
+	file_name = read_csv(filename)
+
+decode = config.get('Cleanser', 'Decode Text')
+url = config.get('Cleanser', 'Remove URL')
+stop_rem = config.get('Cleanser', 'Remove Stopwords')
+sent_tok = config.get('Cleanser', 'Tokenize Sentences')
+apos_rem = config.get('Cleanser', 'Remove Apostrophes')
+punc = config.get('Cleanser', 'Remove Punctuation')
+h_char = config.get('Cleanser', 'Convert Escape Characters')
+htag = config.get('Cleanser', 'Remove HTML Tags')
+
+file_name = sent_tokenizer(file_name)
+if decode == 'True':
+	file_name = decoder(file_name)
+if htag == 'True':
+	file_name = html_clean(file_name)
+if h_char == 'True':
+	file_name = html_char(file_name)
+if url == 'True':
+	file_name = url_rem(file_name)
+if punc == 'True':
+	file_name = strip_punc(file_name)
+if stop_rem == 'True':
+	file_name = stopword_rem(file_name)
+if apos_rem == 'True':
+	file_name == apostrophe_rem(file_name)
+
+print file_name
