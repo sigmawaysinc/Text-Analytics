@@ -57,3 +57,4 @@ def correction(file_name):
 
 
 print ' '.join(correction(filename))
+print ctr
