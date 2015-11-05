@@ -1,0 +1,5 @@
+For Spell checker-
+
+# The code removes ',' and '?', '"', '%', '&', '/', '*', '()'
+# Add all suggestions
+# Show the specific words changed in a file/ highlight those words
