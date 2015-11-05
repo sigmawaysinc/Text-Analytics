@@ -98,7 +98,7 @@ def pos_tag(sentence):				# Example:
 	return nltk.pos_tag(yolo)		# [["I", NNP], ["am", NNP], ["walking", VBD]]
 
 if filetype == 'txt':
-	file_name = read_txt(filename)
+	file_name = read_txt_file(filename)
 elif filetype == 'json':
 	file_name = read_json(filename)
 elif filetype == 'xml':
