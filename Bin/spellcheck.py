@@ -41,6 +41,7 @@ def correction(file_name):
 	elif filetype == 'csv':
 		file_name = read_csv(file_name)
 	output = []
+	ctr = 0
 	for item in file_name:
 		if d.check(item):
 			output.append(item)
@@ -48,7 +49,6 @@ def correction(file_name):
 			a = d.suggest(item)
 			if len(a) > 0:
 				output.append(a[0])
-				ctr = 0
 				ctr += 1  #Number of corrected words
 			else:
 				output.append(item)
