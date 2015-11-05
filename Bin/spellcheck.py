@@ -52,9 +52,9 @@ def correction(file_name):
 				ctr += 1  #Number of corrected words
 			else:
 				output.append(item)
+	print ctr
 	return output
 
 
 
 print ' '.join(correction(filename))
-print ctr
