@@ -76,9 +76,12 @@ def cleanse_txt():
 			file_name[item] = strip_punc(file_name[item])
 	if stop_rem == 'True':
 		for item in xrange(len(file_name)):
-			file_name[item] = stopword_rem(file_name[item])
+			file_name[item] = " ".join(stopword_rem(file_name[item]))
 	if apos_rem == 'True':
 		for item in xrange(len(file_name)):
 			file_name[item] = apostrophe_rem(file_name[item])
 	return file_name
+
 print "\n".join(cleanse_txt())
+
+
