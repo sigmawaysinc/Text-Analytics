@@ -1,7 +1,18 @@
 import nltk
 import numpy as np
+import ConfigParser
 
-sent = raw_input("Enter a sentence")
+config = ConfigParser.ConfigParser()
+
+config.read('text_config.ini')
+filename = config.get('File functions', 'Input File Path')
+filetype = config.get('File functions', 'Input File Format')
+if_spell = config.get('File functions', 'Stem')
+
+def read_txt_file(file_name):
+	read_filename = open(filename, 'r')
+	read_filename = read_filename.read()
+	return read_filename
 
 def word_tokenizer(sentence):
 	return word_tokenize(sentence)
@@ -10,9 +21,8 @@ def pos_tag(sentence):
 	return nltk.pos_tag(word_tokenizer(sentence))
 
 def stem_words(sentence):
-	stemmed_port = []
+    sentence = read_txt_file(filename)
 	stemmed_wnl = []
-	port = PorterStemmer()
 	wnl = WordNetLemmatizer()
 	tokens = word_tokenizer(sentence)
 	pos_list = np.array(pos_tag(sentence))
@@ -33,7 +43,6 @@ def stem_words(sentence):
 			stemmed_wnl.append(wnl.lemmatize(tokens[x], wn.VERB))
 		elif pos_array[x] in adv_array:
 			stemmed_wnl.append(wnl.lemmatize(tokens[x], wn.ADV))
-	print pos_tag(sentence)
-	print stemmed_wnl
+	return stemmed_wnl
 
 stem_words(sent)
