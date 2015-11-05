@@ -23,7 +23,7 @@ def read_txt_table(file_name):
 		inp.append(x)
 	return inp
 
-def read_csv():
+def read_csv(file_name):
 	inp = []
 	with open(file_name, 'rU') as g:
 		reader = csv.reader(g,delimiter = ',')
