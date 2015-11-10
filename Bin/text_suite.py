@@ -10,6 +10,7 @@ import numpy as np
 import nltk
 import ConfigParser
 
+
 config = ConfigParser.ConfigParser()
 config.read('text_config.ini')
 filename = config.get('File functions', 'Input File Path')
@@ -49,9 +50,7 @@ def read_csv():
 	with open(file_name, 'rU') as g:
 		reader = csv.reader(g,delimiter = ',')
 		sent = list(reader)
-	for x,y in sent:
-		inp.append(x)
-	return inp
+	return sent
 
 def read_txt_file(file_name):
 	read_filename = open(filename, 'r')
@@ -62,8 +61,7 @@ def strip_punc(sentence):
 
 from HTMLParser import HTMLParser
 def apostrophe_rem(sentence):
-	html_parse = ()
-	return(sentence.replace(html_parse.unescape("&#39;",""))
+	return(sentence.replace(chr(39),""))
 
 def url_rem(sentence):
 	sentence = re.sub(r"(?:\@|https?\://|www)\S+", "", sentence)
@@ -82,13 +80,13 @@ def decoder(sentence):
 	return(sentence.decode('utf8').encode('ascii','ignore'))
 
 def stopword_rem(sentence):
-	inbuilt_stopwords = stopwords.words("english")
-	sent = [word for word in sentence.split() if word not in inbuilt_stopwords]
-	return(sent)
+	pattern = re.compile(r'\b(' + r'|'.join(stopwords.words('english')) + r')\b\s*')
+	sent = pattern.sub('', sentence)
+	return sent
 
 if filetype == 'txt':
 	file_name = read_txt_file(filename)
-	" ".join(file_name)
+	file_name = " ".join(file_name)
 elif filetype == 'json':
 	file_name = read_json(filename)
 elif filetype == 'xml':
@@ -101,25 +99,16 @@ elif filetype == 'csv':
 decode = config.get('Cleanser', 'Decode Text')
 url = config.get('Cleanser', 'Remove URL')
 stop_rem = config.get('Cleanser', 'Remove Stopwords')
-sent_tok = config.get('Cleanser', 'Tokenize Sentences')
 apos_rem = config.get('Cleanser', 'Remove Apostrophes')
 punc = config.get('Cleanser', 'Remove Punctuation')
 h_char = config.get('Cleanser', 'Convert Escape Characters')
 htag = config.get('Cleanser', 'Remove HTML Tags')
 
-if decode == 'True':
-	file_name = decoder(file_name)
-if htag == 'True':
-	file_name = html_clean(file_name)
-if h_char == 'True':
-	file_name = html_char(file_name)
-if url == 'True':
-	file_name = url_rem(file_name)
-if punc == 'True':
-	file_name = strip_punc(file_name)
-if stop_rem == 'True':
-	file_name = stopword_rem(file_name)
-if apos_rem == 'True':
-	file_name == apostrophe_rem(file_name)
-
-print file_name
+func_list = [decode, htag, h_char, url, stop_rem, punc, apos_rem]
+clean_list = [decoder, html_clean, html_char, url_rem, stopword_rem, strip_punc, apostrophe_rem]
+for x in xrange(0,len(func_list)):
+	if func_list[x] == 'True':
+		file_name = clean_list[x](file_name)
+output_file = open(output_file, 'w')
+print >> output_file, file_name
+output_file.close()
