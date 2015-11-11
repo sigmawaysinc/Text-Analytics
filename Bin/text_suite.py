@@ -29,7 +29,7 @@ def read_txt_table():
 		inp.append(x)
 	return inp
 
-def read_json():
+def read_json(filename):
 	inp = []
 	with open(filename, 'r') as f:
 		reader = json.load(f)
@@ -45,7 +45,7 @@ def read_xml():
 def read_rss():
 	pass
 
-def read_csv():
+def read_csv(file_name):
 	inp = []
 	with open(file_name, 'rU') as g:
 		reader = csv.reader(g,delimiter = ',')
@@ -61,7 +61,7 @@ def strip_punc(sentence):
 
 from HTMLParser import HTMLParser
 def apostrophe_rem(sentence):
-	return(sentence.replace(chr(39),""))
+	return(sentence.replace(string.punctuation[6],""))
 
 def url_rem(sentence):
 	sentence = re.sub(r"(?:\@|https?\://|www)\S+", "", sentence)
@@ -110,5 +110,5 @@ for x in xrange(0,len(func_list)):
 	if func_list[x] == 'True':
 		file_name = clean_list[x](file_name)
 output_file = open(output_file, 'w')
-print >> output_file, file_name
+print >> output_file, file_name.encode('utf-8')
 output_file.close()
