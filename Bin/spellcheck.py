@@ -9,6 +9,7 @@ config.read('text_config.ini')
 filename = config.get('File functions', 'Input File Path')
 filetype = config.get('File functions', 'Input File Format')
 if_spell = config.get('File functions', 'Check Spelling')
+output_file = config.get('File functions','Output File')
 def read_txt_file(file_name):
 	read_filename = open(filename, 'r')
 	read_filename = read_filename.read()
@@ -28,12 +29,13 @@ def read_csv(file_name):
 	with open(file_name, 'rU') as g:
 		reader = csv.reader(g,delimiter = ',')
 		sent = list(reader)
-	for x,y in sent:
+	for x in sent:
 		inp.append(x)
 	return inp
 
 def correction(file_name):
 	d = enchant.Dict("en_US.dic")
+	corr = []
 	if filetype == 'txt':
 		file_name = read_txt_file(file_name).split()
 	elif filetype == 'tab':
@@ -52,9 +54,11 @@ def correction(file_name):
 				ctr += 1  #Number of corrected words
 			else:
 				output.append(item)
-	print ctr
 	return output
 
+file_name = " ".join(correction(filename))
 
+output_file = open(output_file, 'w')
 
-print ' '.join(correction(filename))
+print >> output_file, file_name
+output_file.close()
