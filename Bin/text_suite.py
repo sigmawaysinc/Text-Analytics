@@ -57,7 +57,8 @@ def read_txt_file(file_name):
 	return read_filename.read().splitlines()
 
 def strip_punc(sentence):
-	return(sentence.translate(string.maketrans("",""), string.punctuation))
+	remove_punctuation_map = dict((ord(char), None) for char in string.punctuation)
+	return(sentence.translate(remove_punctuation_map))
 
 from HTMLParser import HTMLParser
 def apostrophe_rem(sentence):
@@ -105,7 +106,7 @@ h_char = config.get('Cleanser', 'Convert Escape Characters')
 htag = config.get('Cleanser', 'Remove HTML Tags')
 
 func_list = [decode, htag, h_char, url, stop_rem, punc, apos_rem]
-clean_list = [decoder, html_clean, html_char, url_rem, stopword_rem, strip_punc, apostrophe_rem]
+clean_list = [decoder, html_clean, html_char, url_rem, stopword_rem, apostrophe_rem, strip_punc]
 for x in xrange(0,len(func_list)):
 	if func_list[x] == 'True':
 		file_name = clean_list[x](file_name)
