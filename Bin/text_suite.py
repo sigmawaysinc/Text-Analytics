@@ -1,4 +1,3 @@
-# This is the full text analytics suite, including the cleanser, stemmer, language classifier, spell checker, grammar checker, entity recognizer and content summarizer
 import string
 import re
 import csv
@@ -9,6 +8,7 @@ from nltk.corpus import wordnet as wn
 import numpy as np
 import nltk
 import ConfigParser
+from HTMLParser import HTMLParser
 
 
 config = ConfigParser.ConfigParser()
@@ -58,9 +58,8 @@ def read_txt_file(file_name):
 
 def strip_punc(sentence):
 	remove_punctuation_map = dict((ord(char), None) for char in string.punctuation)
-	return(sentence.translate(remove_punctuation_map))
+	return(sentence.translate(None, string.punctuation))
 
-from HTMLParser import HTMLParser
 def apostrophe_rem(sentence):
 	return(sentence.replace(string.punctuation[6],""))
 
@@ -105,7 +104,7 @@ punc = config.get('Cleanser', 'Remove Punctuation')
 h_char = config.get('Cleanser', 'Convert Escape Characters')
 htag = config.get('Cleanser', 'Remove HTML Tags')
 
-func_list = [decode, htag, h_char, url, stop_rem, punc, apos_rem]
+func_list = [decode, htag, h_char, url, stop_rem, apos_rem, punc]
 clean_list = [decoder, html_clean, html_char, url_rem, stopword_rem, apostrophe_rem, strip_punc]
 for x in xrange(0,len(func_list)):
 	if func_list[x] == 'True':
