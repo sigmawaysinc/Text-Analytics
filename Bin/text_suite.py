@@ -37,7 +37,7 @@ def read_json(filename):
 	length = len(reader)
 	for x in xrange(0,length):
 		inp.append(reader[x][key[1]])
-	return inp
+	return " ".join(inp)
 
 def read_xml():
 	pass
@@ -50,7 +50,7 @@ def read_csv(file_name):
 	with open(file_name, 'rU') as g:
 		reader = csv.reader(g,delimiter = ',')
 		sent = list(reader)
-	return sent
+	return " ".join(inp)
 
 def read_txt_file(file_name):
 	read_filename = open(filename, 'r')
