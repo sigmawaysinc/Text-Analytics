@@ -33,10 +33,10 @@ def read_json(filename):
 	inp = []
 	with open(filename, 'r') as f:
 		reader = json.load(f)
-	key = reader[1].keys()
+	key = reader[0].keys()
 	length = len(reader)
 	for x in xrange(0,length):
-		inp.append(reader[x][key[1]])
+		inp.append(reader[x][key[5]])
 	return " ".join(inp)
 
 def read_xml():
@@ -47,10 +47,10 @@ def read_rss():
 
 def read_csv(file_name):
 	inp = []
-	with open(file_name, 'rU') as g:
-		reader = csv.reader(g,delimiter = ',')
-		sent = list(reader)
-	return " ".join(inp)
+	with open(file_name, 'r') as g:
+		read = csv.reader(g,delimiter = ',', quotechar = '|')
+		sent = list(read)
+	return " ".join([j for i in sent for j in i])
 
 def read_txt_file(file_name):
 	read_filename = open(filename, 'r')
