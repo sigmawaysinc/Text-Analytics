@@ -15,7 +15,6 @@ config = ConfigParser.ConfigParser()
 config.read('text_config.ini')
 filename = config.get('File functions', 'Input File Path')
 filetype = config.get('File functions', 'Input File Format')
-output_file = config.get('File functions', 'Output File')
 task_type = config.get('File functions', 'Type of Task')
 if_cleanse = config.get('File functions', 'Cleanse')
 
@@ -25,9 +24,7 @@ def read_txt_table():
 	with open(file_name, 'rU') as g:
 		reader = csv.reader(g,delimiter = '\t')
 		sent = list(reader)
-	for x,y in sent:
-		inp.append(x)
-	return inp
+	return inp.append(x for x,y in sent)
 
 def read_json(filename):
 	inp = []
@@ -57,8 +54,8 @@ def read_txt_file(file_name):
 	return read_filename.read().splitlines()
 
 def strip_punc(sentence):
-	remove_punctuation_map = dict((ord(char), None) for char in string.punctuation)
-	return(sentence.translate(None, string.punctuation))
+	regex = re.compile('[%s]' % re.escape(string.punctuation))
+	return regex.sub('', s)
 
 def apostrophe_rem(sentence):
 	return(sentence.replace(string.punctuation[6],""))
@@ -84,31 +81,31 @@ def stopword_rem(sentence):
 	sent = pattern.sub('', sentence)
 	return sent
 
-if filetype == 'txt':
-	file_name = read_txt_file(filename)
-	file_name = " ".join(file_name)
-elif filetype == 'json':
-	file_name = read_json(filename)
-elif filetype == 'xml':
-	file_name = read_xml(filename)
-elif filetype == 'rss':
-	file_name = read_rss(filename)
-elif filetype == 'csv':
-	file_name = read_csv(filename)
+def main():
+	if filetype == 'txt':
+		file_name = read_txt_file(filename)
+		file_name = " ".join(file_name)
+	elif filetype == 'json':
+		file_name = read_json(filename)
+	elif filetype == 'csv':
+		file_name = read_csv(filename)
 
-decode = config.get('Cleanser', 'Decode Text')
-url = config.get('Cleanser', 'Remove URL')
-stop_rem = config.get('Cleanser', 'Remove Stopwords')
-apos_rem = config.get('Cleanser', 'Remove Apostrophes')
-punc = config.get('Cleanser', 'Remove Punctuation')
-h_char = config.get('Cleanser', 'Convert Escape Characters')
-htag = config.get('Cleanser', 'Remove HTML Tags')
+	decode = config.get('Cleanser', 'Decode Text')
+	url = config.get('Cleanser', 'Remove URL')
+	stop_rem = config.get('Cleanser', 'Remove Stopwords')
+	apos_rem = config.get('Cleanser', 'Remove Apostrophes')
+	punc = config.get('Cleanser', 'Remove Punctuation')
+	h_char = config.get('Cleanser', 'Convert Escape Characters')
+	htag = config.get('Cleanser', 'Remove HTML Tags')
 
-func_list = [decode, htag, h_char, url, stop_rem, apos_rem, punc]
-clean_list = [decoder, html_clean, html_char, url_rem, stopword_rem, apostrophe_rem, strip_punc]
-for x in xrange(0,len(func_list)):
-	if func_list[x] == 'True':
-		file_name = clean_list[x](file_name)
-output_file = open(output_file, 'w')
-print >> output_file, file_name.encode('utf-8')
-output_file.close()
+	func_list = [decode, htag, h_char, url, stop_rem, apos_rem, punc]
+	clean_list = [decoder, html_clean, html_char, url_rem, stopword_rem, apostrophe_rem, strip_punc]
+	for x in xrange(0,len(func_list)):
+		if func_list[x] == 'True':
+			file_name = clean_list[x](file_name)
+	output_file = config.get('File functions', 'Output File')
+	output_file = open(output_file, 'w')
+	print >> output_file, file_name.encode('utf-8')
+	output_file.close()
+
+main()
