@@ -5,7 +5,16 @@ from sklearn.datasets import load_files as lf
 from sklearn.naive_bayes import MultinomialNB
 import random
 import statistics
+'''
+This language classifier supports the following languages:
+German
+English
+French
+Italian
+Portugese
 
+The classifier used is a Multinomial Naive Bayes classifier
+'''
 files = lf('/Users/Prakruti/desktop/Languages/Train', load_content = True, random_state = random.randint(0,50), categories = None)
 lang_dict = {0:"German", 1:"English", 2:"Spanish",3: "French", 4: "Italian", 5:"Portugese"}
 

@@ -6,6 +6,23 @@ import ConfigParser
 import string
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet as wn
+'''
+Stemming is a tool used to perform important tasks like term frequency count and is
+
+critical in optimization of code in the fields of information retrieval and domain analysis.
+
+The algorithm is run from Python's natural language toolkit (NLTK), and uses the Princeton
+
+Wordnet library to search for inflected and root forms. We tag the parts of speech before
+
+running the stemming/lemmatization process in order for the program to figure out which word
+
+has to be stemmed in the case of one word being used in different parts of speech.
+
+For example: "The running man ran a race" would be stemmed to "The running man run a race",
+
+where only the word ran would be stemmed.
+'''
 
 config = ConfigParser.ConfigParser()
 
@@ -52,5 +69,3 @@ def stem_words():
 		elif pos_array[x] in adv_array:
 			stemmed_wnl.append(wnl.lemmatize(tokens[x], wn.ADV))
 	return stemmed_wnl
-
-print stem_words()

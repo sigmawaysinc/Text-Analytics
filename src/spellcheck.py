@@ -3,6 +3,21 @@ import enchant
 import ConfigParser
 import csv
 
+'''
+The spellchecker runs on a classic model of inserts, deletions and replaces.
+
+This code runs with a combination of Peter Norvig's 21-line application and
+
+the python Pattern library, with a customized dictionary.
+
+The code is able to correct words from a file or sentence to its closest counterpart
+
+using the Levenshtein edit distance. Further functionality will include suggestions of
+
+the next five closest words, from which the user will be able to pick which works.
+'''
+
+
 config = ConfigParser.ConfigParser()
 
 config.read('text_config.ini')
